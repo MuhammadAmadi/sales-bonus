@@ -81,7 +81,7 @@ function analyzeSalesData(data, options) {
     console.log(`sellerIndex:`, sellerIndex);
 
     const productIndex = {};
-    data.products.forEach( product => productIndex[product.sku] = { sku: product.sku, purchase_price: product.purchase_price } );
+    data.products.forEach( product => productIndex[product.sku] = { purchase_price: product.purchase_price, sold: 0 } );
 
     console.log(`productIndex:`, productIndex);
     // @TODO: Расчет выручки и прибыли для каждого продавца
@@ -91,6 +91,7 @@ function analyzeSalesData(data, options) {
         record.items.forEach( item => {
             const sku = item.sku;
             seller.products_sold[sku] = (seller.products_sold[sku] || 0) + item.quantity;
+            productIndex[sku].sold += item.quantity;
             
             const revenue = calculateRevenue(item);
             seller.revenue += revenue;
@@ -99,6 +100,9 @@ function analyzeSalesData(data, options) {
     });
 
     // @TODO: Сортировка продавцов по прибыли
+
+    sellerStats.sort( (a, b) => b.profit - a.profit );
+    console.log(`Sorted sellerStats:`, sellerStats);
 
     // @TODO: Назначение премий на основе ранжирования
 

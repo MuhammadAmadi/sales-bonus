@@ -8,7 +8,7 @@ function calculateSimpleRevenue(purchase, _product) {
    // @TODO: Расчет выручки от операции
    const { discount , sale_price, quantity } = purchase;
 
-   return +(sale_price * quantity * (1 - discount / 100)).toFixed(5);
+   return sale_price * quantity * (1 - discount / 100);
 }
 
 /**
@@ -119,6 +119,6 @@ function analyzeSalesData(data, options) {
         profit: +seller.profit.toFixed(2),
         sales_count: seller.sales_count,
         top_products: seller.top_products,
-        bonus: seller.bonus
+        bonus: +seller.bonus.toFixed(2)
     }));
 }

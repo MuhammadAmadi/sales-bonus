@@ -8,7 +8,7 @@ function calculateSimpleRevenue(purchase, _product) {
    // @TODO: Расчет выручки от операции
    const { discount , sale_price, quantity } = purchase;
 
-   return +(sale_price * quantity * (1 - discount / 100)).toFixed(2);
+   return +(sale_price * quantity * (1 - discount / 100)).toFixed(3);
 }
 
 /**

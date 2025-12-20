@@ -51,8 +51,8 @@ function analyzeSalesData(data, options) {
         throw new Error('Некорректный формат входных данных');
         }
     
-    if (data.products.length === 0) {
-        throw new Error('Нет записей о проадаже товаров');
+    if (data.purchase_records.length === 0) {
+        throw new Error('Нет записей о продаже товаров');
     }
 
     // @TODO: Проверка наличия опций

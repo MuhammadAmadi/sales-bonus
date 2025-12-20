@@ -82,7 +82,7 @@ function analyzeSalesData(data, options) {
     sellerStats.forEach( seller => sellerIndex[seller.id] = seller );
 
     const productIndex = {};
-    data.products.forEach( product => productIndex[product.sku] = { purchase_price: product.purchase_price, sold: 0 } );
+    data.products.forEach( product => productIndex[product.sku] = product.purchase_price );
 
     // @TODO: Расчет выручки и прибыли для каждого продавца
     data.purchase_records.forEach( record => {
@@ -91,11 +91,10 @@ function analyzeSalesData(data, options) {
         record.items.forEach( item => {
             const sku = item.sku;
             seller.products_sold[sku] = (seller.products_sold[sku] || 0) + item.quantity;
-            productIndex[sku].sold += item.quantity;
             
             const revenue = calculateRevenue(item);
             seller.revenue += revenue;
-            seller.profit += revenue - (productIndex[sku].purchase_price * item.quantity);
+            seller.profit += revenue - (productIndex[sku] * item.quantity);
         });
     });
 

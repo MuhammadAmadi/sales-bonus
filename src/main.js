@@ -98,10 +98,10 @@ function analyzeSalesData(data, options) {
             sum += revenue;
         });
 
-        console.log('Расчитана выручка:', sum);
-        console.log('total_amount:', record.total_amount);
-        console.log('total_discount:', record.total_discount);
-        console.log('Ожидаемая (total_amount - total_discount):', record.total_amount - record.total_discount);
+        // console.log('Расчитана выручка:', sum);
+        // console.log('total_amount:', record.total_amount);
+        // console.log('total_discount:', record.total_discount);
+        // console.log('Ожидаемая (total_amount - total_discount):', record.total_amount - record.total_discount);
     });
 
     // @TODO: Сортировка продавцов по прибыли

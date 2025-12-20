@@ -8,7 +8,7 @@ function calculateSimpleRevenue(purchase, _product) {
    // @TODO: Расчет выручки от операции
    const { discount , sale_price, quantity } = purchase;
 
-   return +(sale_price * quantity * (1 - discount / 100)).toFixed(3);
+   return +(sale_price * quantity * (1 - discount / 100)).toFixed(5);
 }
 
 /**
@@ -23,14 +23,14 @@ function calculateBonusByProfit(index, total, seller) {
     const { profit } = seller;
 
     if (index === 0) {
-        return +(profit * 0.15).toFixed(2); // 15% бонус для первого места
+        return +(profit * 0.15).toFixed(5); // 15% бонус для первого места
     } else if (index === total - 1) {
         return 0; // 0% бонус для последнего места
     } else if (index === 1 || index === 2) {
-        return +(profit * 0.1).toFixed(2); // 10% бонус для второго и третьего места
+        return +(profit * 0.1).toFixed(5); // 10% бонус для второго и третьего места
     } 
 
-    return +(profit * 0.05).toFixed(2); // 5% бонус для остальных
+    return +(profit * 0.05).toFixed(5); // 5% бонус для остальных
 }
 
 /**

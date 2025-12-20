@@ -8,7 +8,7 @@ function calculateSimpleRevenue(purchase, _product) {
    // @TODO: Расчет выручки от операции
    const { discount , sale_price, quantity } = purchase;
 
-   return sale_price * quantity * (1 - discount / 100);
+   return +(sale_price * quantity * (1 - discount / 100)).toFixed(2);
 }
 
 /**
@@ -23,14 +23,14 @@ function calculateBonusByProfit(index, total, seller) {
     const { profit } = seller;
 
     if (index === 0) {
-        return profit * 0.15; // 15% бонус для первого места
+        return +(profit * 0.15).toFixed(2); // 15% бонус для первого места
     } else if (index === total - 1) {
         return 0; // 0% бонус для последнего места
     } else if (index === 1 || index === 2) {
-        return profit * 0.1; // 10% бонус для второго и третьего места
+        return +(profit * 0.1).toFixed(2); // 10% бонус для второго и третьего места
     } 
 
-    return profit * 0.05; // 5% бонус для остальных
+    return +(profit * 0.05).toFixed(2); // 5% бонус для остальных
 }
 
 /**
@@ -90,10 +90,11 @@ function analyzeSalesData(data, options) {
             seller.products_sold[sku] = (seller.products_sold[sku] || 0) + item.quantity;
             
             const revenue = calculateRevenue(item);
+            seller.revenue += revenue;
             seller.profit += revenue - (productIndex[sku] * item.quantity);
         });
 
-        seller.revenue += record.total_amount - record.total_discount;
+        seller.revenue -= record.total_discount;
     });
 
     // @TODO: Сортировка продавцов по прибыли
@@ -118,6 +119,6 @@ function analyzeSalesData(data, options) {
         profit: +seller.profit.toFixed(2),
         sales_count: seller.sales_count,
         top_products: seller.top_products,
-        bonus: +seller.bonus.toFixed(2)
+        bonus: seller.bonus
     }));
 }

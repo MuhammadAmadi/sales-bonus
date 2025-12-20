@@ -29,7 +29,7 @@ function calculateBonusByProfit(index, total, seller) {
     } else if (index === 1 || index === 2) {
         return profit * 0.1; // 10% бонус для второго и третьего места
     } 
-    
+
     return profit * 0.05; // 5% бонус для остальных
 }
 
@@ -50,6 +50,10 @@ function analyzeSalesData(data, options) {
         !Array.isArray(data.purchase_records)) {
         throw new Error('Некорректный формат входных данных');
         }
+    
+    if (data.products.length === 0) {
+        throw new Error('Нет записей о проадаже товаров');
+    }
 
     // @TODO: Проверка наличия опций
     if (!options || typeof options !== 'object') {

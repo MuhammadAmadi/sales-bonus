@@ -45,14 +45,11 @@ function analyzeSalesData(data, options) {
         throw new Error('Нет данных для анализа');
     }
 
-    if (!Array.isArray(data.products) ||
-        !Array.isArray(data.sellers) ||
-        !Array.isArray(data.purchase_records)) {
+    if (!Array.isArray(data.products) || data.products.length === 0 ||
+        !Array.isArray(data.sellers) || data.sellers.length === 0 ||
+        !Array.isArray(data.purchase_records) || data.purchase_records.length === 0
+    ) {
         throw new Error('Некорректный формат входных данных');
-        }
-    
-    if (data.purchase_records.length === 0) {
-        throw new Error('Нет записей о продаже товаров');
     }
 
     // @TODO: Проверка наличия опций

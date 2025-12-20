@@ -102,9 +102,12 @@ function analyzeSalesData(data, options) {
     // @TODO: Сортировка продавцов по прибыли
 
     sellerStats.sort( (a, b) => b.profit - a.profit );
-    console.log(`Sorted sellerStats:`, sellerStats);
 
     // @TODO: Назначение премий на основе ранжирования
+
+    sellerStats.forEach( (seller, index) => {
+        seller.bonus = calculateBonus(index, sellerStats.length, seller);
+    });
 
     // @TODO: Подготовка итоговой коллекции с нужными полями
 }

@@ -24,13 +24,13 @@ function calculateBonusByProfit(index, total, seller) {
 
     if (index === 0) {
         return profit * 0.15; // 15% бонус для первого места
-    } else if (index === 1 || index === 2) {
-        return profit * 0.1; // 10% бонус для второго и третьего места
     } else if (index === total - 1) {
         return 0; // 0% бонус для последнего места
-    } else {
-        return profit * 0.05; // 5% бонус для остальных
-    }
+    } else if (index === 1 || index === 2) {
+        return profit * 0.1; // 10% бонус для второго и третьего места
+    } 
+    
+    return profit * 0.05; // 5% бонус для остальных
 }
 
 /**
@@ -45,7 +45,8 @@ function analyzeSalesData(data, options) {
         throw new Error('Нет данных для анализа');
     }
 
-    if (!Array.isArray(data.customers) || !Array.isArray(data.products) || !Array.isArray(data.sellers) ||
+    if (!Array.isArray(data.products) ||
+        !Array.isArray(data.sellers) ||
         !Array.isArray(data.purchase_records)) {
         throw new Error('Некорректный формат входных данных');
         }
@@ -72,18 +73,13 @@ function analyzeSalesData(data, options) {
         products_sold: {}
     }));
 
-    console.log(`sellerStats:`, sellerStats);
-
     // @TODO: Индексация продавцов и товаров для быстрого доступа
     const sellerIndex = {};
     sellerStats.forEach( seller => sellerIndex[seller.id] = seller );
 
-    console.log(`sellerIndex:`, sellerIndex);
-
     const productIndex = {};
     data.products.forEach( product => productIndex[product.sku] = { purchase_price: product.purchase_price, sold: 0 } );
 
-    console.log(`productIndex:`, productIndex);
     // @TODO: Расчет выручки и прибыли для каждого продавца
     data.purchase_records.forEach( record => {
         const seller = sellerIndex[record.seller_id];
@@ -107,7 +103,20 @@ function analyzeSalesData(data, options) {
 
     sellerStats.forEach( (seller, index) => {
         seller.bonus = calculateBonus(index, sellerStats.length, seller);
+        seller.top_products = Object.entries(seller.products_sold)
+            .sort( (a, b) => b[1] - a[1] )
+            .slice(0, 10)
+            .map( ([sku, quantity]) => ({ sku, quantity }) );
     });
 
     // @TODO: Подготовка итоговой коллекции с нужными полями
+    return sellerStats.map( seller => ({
+        seller_id: seller.id,
+        name: seller.name,
+        revenue: +seller.revenue.toFixed(2),
+        profit: +seller.profit.toFixed(2),
+        sales_count: seller.sales_count,
+        top_products: seller.top_products,
+        bonus: +seller.bonus.toFixed(2)
+    }));
 }

@@ -89,7 +89,7 @@ function analyzeSalesData(data, options) {
             const sku = item.sku;
             seller.products_sold[sku] = (seller.products_sold[sku] || 0) + item.quantity;
             
-            const revenue = calculateRevenue(item);
+            const revenue = +(calculateRevenue(item)).toFixed(2);
             seller.revenue += revenue;
             seller.profit += revenue - (productIndex[sku] * item.quantity);
         });

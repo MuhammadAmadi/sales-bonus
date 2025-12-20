@@ -93,7 +93,7 @@ function analyzeSalesData(data, options) {
             seller.profit += revenue - (productIndex[sku] * item.quantity);
         });
 
-        seller.revenue = record.total_amount - record.total_discount;
+        seller.revenue += record.total_amount - record.total_discount;
     });
 
     // @TODO: Сортировка продавцов по прибыли

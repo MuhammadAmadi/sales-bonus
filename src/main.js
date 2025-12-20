@@ -8,7 +8,7 @@ function calculateSimpleRevenue(purchase, _product) {
    // @TODO: Расчет выручки от операции
    const { discount , sale_price, quantity } = purchase;
 
-   return sale_price * quantity * (1 - discount / 100) - sale_price * quantity * (discount / 100);
+   return sale_price * quantity * (1 - discount / 100);
 }
 
 /**
@@ -69,7 +69,6 @@ function analyzeSalesData(data, options) {
         id: seller.id,
         name: `${seller.first_name} ${seller.last_name}`,
         revenue: 0,
-        test_revenue: 0,
         profit: 0,
         sales_count: 0,
         products_sold: {}
@@ -86,8 +85,6 @@ function analyzeSalesData(data, options) {
     data.purchase_records.forEach( record => {
         const seller = sellerIndex[record.seller_id];
         seller.sales_count += 1;
-        seller.test_revenue += record.total_amount - record.total_discount;
-        let sum = 0;
         record.items.forEach( item => {
             const sku = item.sku;
             seller.products_sold[sku] = (seller.products_sold[sku] || 0) + item.quantity;
@@ -95,13 +92,10 @@ function analyzeSalesData(data, options) {
             const revenue = calculateRevenue(item);
             seller.revenue += revenue;
             seller.profit += revenue - (productIndex[sku] * item.quantity);
-            sum += revenue;
         });
 
-        // console.log('Расчитана выручка:', sum);
-        // console.log('total_amount:', record.total_amount);
-        // console.log('total_discount:', record.total_discount);
-        // console.log('Ожидаемая (total_amount - total_discount):', record.total_amount - record.total_discount);
+        seller.revenue -= record.total_discount;
+        seller.profit -= record.total_discount;
     });
 
     // @TODO: Сортировка продавцов по прибыли
@@ -123,7 +117,6 @@ function analyzeSalesData(data, options) {
         seller_id: seller.id,
         name: seller.name,
         revenue: +seller.revenue.toFixed(2),
-        test_revenue: +seller.test_revenue.toFixed(2),
         profit: +seller.profit.toFixed(2),
         sales_count: seller.sales_count,
         top_products: seller.top_products,

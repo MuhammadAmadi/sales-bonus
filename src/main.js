@@ -90,11 +90,10 @@ function analyzeSalesData(data, options) {
             seller.products_sold[sku] = (seller.products_sold[sku] || 0) + item.quantity;
             
             const revenue = calculateRevenue(item);
-            seller.revenue += revenue;
             seller.profit += revenue - (productIndex[sku] * item.quantity);
         });
 
-        seller.revenue -= record.total_discount;
+        seller.revenue = record.total_amount - record.total_discount;
     });
 
     // @TODO: Сортировка продавцов по прибыли

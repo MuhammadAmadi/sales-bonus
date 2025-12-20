@@ -95,7 +95,6 @@ function analyzeSalesData(data, options) {
         });
 
         seller.revenue -= record.total_discount;
-        seller.profit -= record.total_discount;
     });
 
     // @TODO: Сортировка продавцов по прибыли

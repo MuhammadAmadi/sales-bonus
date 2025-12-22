@@ -8,7 +8,7 @@ function calculateSimpleRevenue(purchase, _product) {
    // @TODO: Расчет выручки от операции
    const { discount , sale_price, quantity } = purchase;
 
-   return _product * quantity * (1 - discount / 100);
+   return _product.sale_price * quantity * (1 - discount / 100);
 }
 
 /**
@@ -79,7 +79,7 @@ function analyzeSalesData(data, options) {
     sellerStats.forEach( seller => sellerIndex[seller.id] = seller );
 
     const productIndex = {};
-    data.products.forEach( product => productIndex[product.sku] = product.purchase_price );
+    data.products.forEach( product => productIndex[product.sku] = {purchase_price: product.purchase_price, sale_price: product.sale_price} );
 
     // @TODO: Расчет выручки и прибыли для каждого продавца
     data.purchase_records.forEach( record => {

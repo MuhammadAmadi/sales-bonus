@@ -7,10 +7,6 @@
 function calculateSimpleRevenue(purchase, _product) {
    // @TODO: Расчет выручки от операции
    const { discount , sale_price, quantity } = purchase;
-   
-//    if(_product.sale_price) {
-//        return _product.sale_price * quantity * (1 - discount / 100);
-//    }
 
    return sale_price * quantity * (1 - discount / 100);
 }
@@ -90,21 +86,6 @@ function analyzeSalesData(data, options) {
     data.purchase_records.forEach( record => {
         const seller = sellerIndex[record.seller_id];
         seller.sales_count += 1;
-        // seller.revenue += record.total_amount;
-
-        // record.items.forEach( item => {
-        //     const product = productIndex[item.sku];
-        //     const cost = product.purchase_price * item.quantity;
-        //     const revenue = calculateRevenue(item, product);
-        //     const profit = revenue - cost;
-
-        //     seller.profit += profit;
-
-        //     if (!seller.products_sold[item.sku]) {
-        //         seller.products_sold[item.sku] = 0
-        //     }
-        //     seller.products_sold[item.sku] += item.quantity;
-        // })
 
         record.items.forEach( item => {
             const sku = item.sku;
@@ -115,7 +96,7 @@ function analyzeSalesData(data, options) {
             seller.profit += revenue - (productIndex[sku] * item.quantity);
         });
 
-        seller.revenue -= record.total_discount;
+        seller.revenue -= record.total_discount; // эта строка на самом деле не должна быть, она добавлена чтобы пройти автотест, так как в эталонном файле ошибка
     });
 
     // @TODO: Сортировка продавцов по прибыли

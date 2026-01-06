@@ -96,7 +96,7 @@ function analyzeSalesData(data, options) {
             seller.profit += revenue - (productIndex[sku] * item.quantity);
         });
 
-        seller.revenue -= record.total_discount; // эта строка на самом деле не должна быть, она добавлена чтобы пройти автотест, так как в эталонном файле ошибка
+        //seller.revenue -= record.total_discount; // эта строка на самом деле не должна быть, она добавлена чтобы пройти автотест, так как в эталонном файле ошибка
     });
 
     // @TODO: Сортировка продавцов по прибыли
